@@ -2,8 +2,11 @@ package hellojpa;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+//default name of table is class name
+//@Table(name = "tablename")
 public class Member {
 
     @Id
