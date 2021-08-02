@@ -1,6 +1,6 @@
 package hellojpa.persistance;
 
-import hellojpa.Member;
+import hellojpa.member.Member;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,7 +17,7 @@ public class JpaUpdate {
         tx.begin();
         try {
             Member member1 = em.find(Member.class, 1L);
-            member1.setName("changeName");
+            member1.setUsername("changeName");
             /*
             update문을 작성하거나 따로 작업한게 없지만, 값을 확인해보면 name이 바뀐걸 확인할 수 있다.
             JPA를 사용함으로 써 데이터베이스를 컬렉션 값 변경하듯이 쓸 수 있다.

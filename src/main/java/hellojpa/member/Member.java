@@ -1,8 +1,7 @@
-package hellojpa;
+package hellojpa.member;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -11,13 +10,17 @@ public class Member {
     @Id
     private Long id;
 
-    /*
-    ANNOTATION
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    insertable, updateable > default value is true
-    nullable > default value is true > false means null isn't allow to this column
-    unique > unique annotation barely used because key naming rule doesn't clear
-    */
+    /*
+        ANNOTATION
+
+        insertable, updateable > default value is true
+        nullable > default value is true > false means null isn't allow to this column
+        unique > unique annotation barely used because key naming rule doesn't clear
+        */
     @Column(name = "name", insertable = true,
             updatable = true, nullable = false, unique = true)
     private String username;
