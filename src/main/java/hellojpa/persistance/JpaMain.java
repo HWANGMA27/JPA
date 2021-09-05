@@ -1,6 +1,7 @@
 package hellojpa.persistance;
 
 import hellojpa.member.Member;
+import hellojpa.member.Movie;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,21 +17,18 @@ public class JpaMain {
 
         tx.begin();
         try {
-            //비영속
-            Member member = new Member(2L, "Per");
-            
-            //영속
-            System.out.println("========before=======");
-            em.persist(member);
-            System.out.println("========after=======");
+            Movie movie = new Movie();
+            movie.setActor("actor");
+            movie.setDirector("director");
+            movie.setPrice(2000);
+            movie.setName("바람과함께사라지다");
+            em.persist(movie);
+            em.flush();
+            em.clear();
 
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("movie = " + findMovie);
             tx.commit();
-
-            //영속 엔티티의 동일성 보장
-            Member a = em.find(Member.class, 2L);
-            Member b = em.find(Member.class, 2L);
-            //같은 트랜젝션 안에서 실행되면 1차 캐시에서 반환되기 때문에 같은 엔티티를 반
-            System.out.println(a==b);
         }catch (Exception e){
             tx.rollback();
         }finally {

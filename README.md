@@ -7,6 +7,9 @@
 > * 여러가지 케이스를 분석함으로써 실무에 적용가능 수준으로 끌어올린다
 > * 현업 실무의 노하우와 성능을 고려한 설계를 해본다
 
+티스토리 : https://dvpdvp.tistory.com/
+
+Trello : https://trello.com/b/ldNEfeTI/daily-tasks-planner
 <!-- ### STEP 0
 > 회원 주문 예제로 서비스 구현
 
