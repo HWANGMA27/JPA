@@ -1,6 +1,7 @@
 package jpabook.jpashop;
 
 import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.items.Book;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,8 +18,12 @@ public class JpaMain {
 
         tx.begin();
         try {
-
-//            em.persist();
+            Book book = new Book();
+            book.setAuthor("kim");
+            book.setIsbn("1234");
+            book.setName("bookName");
+            book.setPrice(10000);
+            em.persist(book);
 
 //            flush cash to check query
 //            em.flush();

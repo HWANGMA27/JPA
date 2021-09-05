@@ -1,11 +1,13 @@
 package jpabook.jpashop.domain;
 
+import jpabook.jpashop.domain.items.BaseEntity;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "ORDER_ITEM_ID")

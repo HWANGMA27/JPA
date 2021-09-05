@@ -1,9 +1,11 @@
 package jpabook.jpashop.domain;
 
+import jpabook.jpashop.domain.items.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
-public class Delivery {
+public class Delivery extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "DELIVERY_ID")

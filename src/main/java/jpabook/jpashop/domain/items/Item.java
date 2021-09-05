@@ -1,20 +1,25 @@
-package jpabook.jpashop.domain;
+package jpabook.jpashop.domain.items;
+
+import jpabook.jpashop.domain.Category;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Item {
+@Inheritance
+public class Item extends BaseEntity{
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
     private Long id;
     private String name;
     private int price;
+    private int stockQuantity;
 
-    @ManyToMany(mappedBy = "items")
-    private List<Category> categories = new ArrayList<>();
+//    @ManyToMany(mappedBy = "item")
+//    private List<Category> categories = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -47,6 +52,11 @@ public class Item {
         this.stockQuantity = stockQuantity;
     }
 
-    private int stockQuantity;
-
+//    public List<Category> getCategories() {
+//        return categories;
+//    }
+//
+//    public void setCategories(List<Category> categories) {
+//        this.categories = categories;
+//    }
 }
