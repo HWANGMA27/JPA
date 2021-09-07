@@ -18,13 +18,20 @@ public class JpaMain {
 
         tx.begin();
         try {
-            Member member = new Member();
-            member.setCreatedBy("kim");
-            member.setCreateDate(LocalDateTime.now());
-            member.setUsername("test");
-            em.persist(member);
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            em.persist(member2);
             em.flush();
             em.clear();
+
+            Member m1 = em.find(Member.class, member1.getId());
+            Member m2 = em.getReference(Member.class, member2.getId());
+            //proxy extends original entity, so when compare instance we should use isInstance instead of ==
+            System.out.println("type : " + m1.getClass().isInstance(m2));
             tx.commit();
         }catch (Exception e){
             tx.rollback();
