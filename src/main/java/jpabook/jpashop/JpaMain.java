@@ -1,6 +1,7 @@
 package jpabook.jpashop;
 
 import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.Team;
 import jpabook.jpashop.domain.items.Book;
 
 import javax.persistence.EntityManager;
@@ -18,16 +19,21 @@ public class JpaMain {
 
         tx.begin();
         try {
-            Book book = new Book();
-            book.setAuthor("kim");
-            book.setIsbn("1234");
-            book.setName("bookName");
-            book.setPrice(10000);
-            em.persist(book);
+            Member member = new Member();
+            member.setName("member");
+            Team team = new Team();
+            team.setName("team");
+            member.setTeam(team);
+            em.persist(team);
+            em.persist(member);
+            em.flush();
+            em.clear();
 
-//            flush cash to check query
-//            em.flush();
-//            em.clear();
+            Member findMember = em.find(Member.class, member.getId());
+
+            System.out.println("findMember = " + findMember.getTeam());
+
+            System.out.println("findMember = " + findMember.getTeam().getClass());
 
 
             tx.commit();

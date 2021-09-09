@@ -18,6 +18,10 @@ public class Member extends BaseEntity {
     private String street;
     private String zipCode;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
@@ -67,5 +71,13 @@ public class Member extends BaseEntity {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
