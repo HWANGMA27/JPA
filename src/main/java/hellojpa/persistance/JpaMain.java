@@ -1,7 +1,9 @@
 package hellojpa.persistance;
 
+import hellojpa.member.Child;
 import hellojpa.member.Member;
 import hellojpa.member.Movie;
+import hellojpa.member.Parent;
 import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
@@ -19,23 +21,20 @@ public class JpaMain {
 
         tx.begin();
         try {
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            em.persist(member1);
+            Child child1 = new Child();
+            Child child2 = new Child();
+
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
 
             em.flush();
             em.clear();
-            Member refMember = em.getReference(Member.class, member1.getId());
-            //proxy extends original entity, so when compare instance we should use isInstance instead of ==
-            System.out.println("refMember.getClass() = " + refMember.getClass());
-            // check entity that already initialized
-            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
-            //force initialize entity
-            Hibernate.initialize(refMember);
 
-            em.detach(refMember);
-            //after detach entity, we can't find proxy
-            refMember.getUsername();
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
 
             tx.commit();
         }catch (Exception e){
