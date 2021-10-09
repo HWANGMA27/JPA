@@ -1,9 +1,6 @@
 package hellojpa.persistance;
 
-import hellojpa.member.Child;
-import hellojpa.member.Member;
-import hellojpa.member.Movie;
-import hellojpa.member.Parent;
+import hellojpa.member.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
@@ -21,21 +18,11 @@ public class JpaMain {
 
         tx.begin();
         try {
-            Child child1 = new Child();
-            Child child2 = new Child();
-
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            findParent.getChildList().remove(0);
-
+            Member2 member = new Member2();
+            member.setUsername("test");
+            member.setHomeAdress(new Address("city", "street", "zipcode"));
+            member.setWorkPeriod(new Period());
+            em.persist(member);
             tx.commit();
         }catch (Exception e){
             tx.rollback();
