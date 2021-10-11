@@ -1,4 +1,6 @@
-package hellojpa.member;
+package hellojpa.entity;
+
+import hellojpa.entity.Item;
 
 import javax.persistence.Entity;
 
