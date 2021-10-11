@@ -1,11 +1,14 @@
 package hellojpa.member;
 
+import hellojpa.entity.BaseEntity;
+import hellojpa.entity.RoleType;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;

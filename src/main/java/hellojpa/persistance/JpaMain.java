@@ -1,13 +1,14 @@
 package hellojpa.persistance;
 
+import hellojpa.entity.Address;
+import hellojpa.entity.AddressEntity;
 import hellojpa.member.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.time.LocalDateTime;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -18,31 +19,33 @@ public class JpaMain {
 
         tx.begin();
         try {
-            Address address = new Address("city", "street", "zipcode");
-            Member2 member = new Member2();
-            member.setUsername("test");
-            member.setHomeAdress(address);
-            member.setWorkPeriod(new Period());
+            MemberCollection member = new MemberCollection();
+            member.setUsername("member");
+            member.setHomeAdress(new Address("homeCity", "street", "10000"));
+
+            member.getFavoriteFood().add("치킨");
+            member.getFavoriteFood().add("피자");
+            member.getFavoriteFood().add("족발");
+
+
+//            member.getAddressHistory().add(new Address("old1", "street", "10000"));
+//            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+//            collection value cascade update when member updated
             em.persist(member);
-            //entity value type shouldn't be share
-            //not making setter can be solution of this problem
-            //or declare access modifier as private
+            em.flush();
+            em.clear();
 
-            //Sol1 copy value
-            Address newAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+            System.out.println("=============== TEST LAZY LOADING ===============");
+            MemberCollection findMember = em.find(MemberCollection.class, member.getId());
+//            List<AddressEntity> addressHistory = findMember.getAddressHistory();
+//
+            System.out.println("=============== UPDATE VALUE TYPE COLLECTION ===============");
+            findMember.getFavoriteFood().remove("치킨");
+            findMember.getFavoriteFood().add("한식");
 
-            Member2 member2 = new Member2();
-            member2.setUsername("test2");
-            member2.setHomeAdress(newAddress);
-            member2.setWorkPeriod(new Period());
-            em.persist(member2);
+            findMember.getAddressHistory().remove(new AddressEntity("old1", "street", "10000"));
+            findMember.getAddressHistory().add(new AddressEntity("newCity1", "street", "10000"));
 
-            //Sol2 make new entity
-            Address newAddress2 = new Address("new city", address.getStreet(), address.getZipcode());
-            member2.setHomeAdress(newAddress2);
-
-
-            //member.getHomeAdress().setCity("newCity");
             tx.commit();
         }catch (Exception e){
             tx.rollback();

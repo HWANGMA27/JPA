@@ -1,11 +1,13 @@
 package hellojpa.member;
 
+import hellojpa.entity.Address;
+import hellojpa.entity.Period;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 //class for study embedded type
 @Entity
-public class Member2 {
+public class MemberEmbedded {
 
     @Id
     @GeneratedValue
