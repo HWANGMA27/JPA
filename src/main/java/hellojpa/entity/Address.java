@@ -5,6 +5,12 @@ import java.util.Objects;
 
 @Embeddable
 public class Address {
+    /*
+        value type collection
+        cons
+        1. hard to trace
+        2. when update data delete all and insert data again
+     */
     private String city;
     private String street;
     private String zipcode;
