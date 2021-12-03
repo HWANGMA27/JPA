@@ -10,8 +10,8 @@
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
             <!-- each db has their own dialect. Declare this property to support this -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-<!--        <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>-->
+<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>-->
+        <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
 <!--        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>-->
 
             <!-- 옵션 -->
