@@ -27,17 +27,17 @@ public class JpqlMain {
             em.flush();
             em.clear();
 
-            //entity call by jpql also managed by persistence context
-            //하이버네이터 5.1부터 연관관계가 없는 엔티티간의 조인도 지원한다.
-            String query = "select m from Member m where m.type = jpql.MemberType.ADMIN";
-            String queryBinding = "select m from Member m where m.type = :userType";
-            List<Member> list = em.createQuery(query, Member.class)
-                    .getResultList();
-            List<Member> bindingList = em.createQuery(query, Member.class)
-                    .setParameter("userType", MemberType.ADMIN)
-                    .getResultList();
-            System.out.println(list.size());
-            System.out.println(bindingList.size());
+            String query = "select " +
+                                "case when m.age <=10 then '학생요금' "+
+                                "when m.age >=60 then '경로요금' "+
+                                "else '일반요금' end "+
+                            "from Member m";
+            String query2 = "select coalesce(m.username, '이름없는 회원') from Member m";
+            String query3 = "select nullif(m.username, 'HELLO') as username from Member m";
+            List<String> resultList = em.createQuery(query3, String.class).getResultList();
+            for(String temp : resultList){
+                System.out.println(temp);
+            }
             tx.commit();
         }catch (Exception e){
             tx.rollback();
