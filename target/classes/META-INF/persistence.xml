@@ -23,4 +23,7 @@
             <property name="hibernate.default_batch_fetch_size" value="1000"/>
         </properties>
     </persistence-unit>
+    <persistence-unit name="jpqlStudy">
+        <mapping-file>META-INF/ormMember.xml</mapping-file>
+    </persistence-unit>
 </persistence>
