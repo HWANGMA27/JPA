@@ -34,21 +34,25 @@ public class JpqlMain {
             em.flush();
             em.clear();
 
-            /*묵시적 내부 조인 발생
-              눈에 보이지 않는 조인이 실제 쿼리가 날라갈 때 발상함으로 나중에 쿼리를 추적할때 시간이 걸리고 튜닝시에도 어려움이 발생한다.
-              실무에서는 사용하지 않는것을 권장한다.
-            */
-            String query = "select m.team from Member m";
+            // 엔티티 자체를 통으로 파라미터로 입력받을 수 있다.
+            String query = "select m from Member m where m = :member";
+            List<Member> findMember = em.createQuery(query, Member.class).setParameter("member", member).getResultList();
+            for(Member temp : findMember){
+                System.out.println(temp.getUsername());
+            }
+            // 위 아래 쿼리 둘다 같은 실행쿼리로 변환된다.
+            // Member의 pk가 id이기 때문에 같은 쿼리로 변환되어 실행된다.
+            String query2 = "select m from Member m where m.id = :memberId";
+            List<Member> findMember2 = em.createQuery(query2, Member.class).setParameter("memberId", member.getId()).getResultList();
+            for(Member temp : findMember2){
+                System.out.println(temp.getUsername());
+            }
 
-            /*명시적 조인
-              가능하면 명시적 조인으로 눈에 보이게 작성해야 한다.
-              명시적 조인을 하면 별칭을 얻어서 다시 경로 탐색을 시작할 수 있다는 장점이 있다.
-            */
-            String query2 = "select t from Member m inner join m.team t";
-
-            List<Team> resultList = em.createQuery(query2, Team.class).getResultList();
-            for(Team temp : resultList){
-                System.out.println(temp.getName());
+            // 연관관계에 있는 테이블도 외래키(FK)로 파라미터 검색이 가능하다.
+            String query3 = "select m from Member m where m.team = :team";
+            List<Member> findMember3 = em.createQuery(query3, Member.class).setParameter("team", team).getResultList();
+            for(Member temp : findMember3){
+                System.out.println(temp.getUsername());
             }
             tx.commit();
         }catch (Exception e){
