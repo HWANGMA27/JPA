@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Optional;

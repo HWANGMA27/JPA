@@ -1,7 +1,6 @@
 package study.datajpa.repository;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.entity.Member;
 
 import javax.persistence.EntityManager;
@@ -42,5 +41,12 @@ public class MemberJpaRepository {
     }
     public void delete(Member member){
         em.remove(member);
+    }
+
+    public List<Member> findByUsernameAndAgeGreaterThan(String username, int age){
+        return em.createQuery("select m from Member m where username = :username and age > :age", Member.class)
+                .setParameter("username", username)
+                .setParameter("age", age)
+                .getResultList();
     }
 }
