@@ -8,6 +8,10 @@ import javax.persistence.*;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
+@NamedQuery(
+        name = "Member.findByUsername",
+        query = "select m from Member m where m.username = :username"
+)
 public class Member {
 
     @Id @GeneratedValue
@@ -22,7 +26,7 @@ public class Member {
 
     //Jpa가 entity를 생성할 떄 기본 생성자가 있어야한다.
     //protected or public 가능
-    public Member(String username){
+   public Member(String username){
         this.username = username;
     }
 
