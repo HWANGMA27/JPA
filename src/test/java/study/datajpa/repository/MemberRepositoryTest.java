@@ -188,9 +188,7 @@ class MemberRepositoryTest {
 
         //when
         Page<Member> page = memberRepository.findByAge(10, pageRequest);
-        Slice<Member> slicePage = memberRepository.findByAgeSlice(10, pageRequest);
 
-        page.map(p -> new MemberDto(p.getId(), p.getUsername(), p.getTeam().getName()));
         //then
         List<Member> content = page.getContent();
 
@@ -199,7 +197,24 @@ class MemberRepositoryTest {
         assertThat(page.getNumber()).isEqualTo(0); //현재 페이지 번호
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue();
+    }
 
-        assertThat(slicePage.getContent().size()).isEqualTo(6); //slice는 갯수를 +1 해서 가져온다
+    @Test
+    public void bulkUpdate(){
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member11", 20));
+        memberRepository.save(new Member("member12", 20));
+        memberRepository.save(new Member("member13", 11));
+        memberRepository.save(new Member("member14", 22));
+        memberRepository.save(new Member("member15", 10));
+        memberRepository.save(new Member("member16", 10));
+
+        int age = 20;
+
+        //when
+        int resultCnt = memberRepository.bulkAgePlus(age);
+
+        //then
+        assertThat(resultCnt).isEqualTo(3);
     }
 }
