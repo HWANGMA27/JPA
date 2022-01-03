@@ -82,4 +82,27 @@ class MemberJpaRepositoryTest {
         //then
         Assertions.assertThat(findMemberList.size()).isEqualTo(1);
     }
+
+    @Test
+    public void paging(){
+        memberJpaRepository.save(new Member("member1", 10));
+        memberJpaRepository.save(new Member("member11", 10));
+        memberJpaRepository.save(new Member("member12", 10));
+        memberJpaRepository.save(new Member("member13", 10));
+        memberJpaRepository.save(new Member("member14", 10));
+        memberJpaRepository.save(new Member("member15", 10));
+        memberJpaRepository.save(new Member("member16", 10));
+
+        int age = 10;
+        int offset = 0;
+        int limit =3;
+
+        //when
+        List<Member> members = memberJpaRepository.findByPage(age, offset, limit);
+        long totalCount = memberJpaRepository.totalCount(age);
+
+        //then
+        assertThat(members.size()).isEqualTo(3);
+        assertThat(totalCount).isEqualTo(7);
+    }
 }
