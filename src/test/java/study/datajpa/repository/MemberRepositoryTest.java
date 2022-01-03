@@ -6,6 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajpa.dto.MemberDto;
@@ -19,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -167,5 +172,34 @@ class MemberRepositoryTest {
         List<Member> listMember = memberRepository.findListByUsername("AAA");
         Member member = memberRepository.findMemberByUsername("AAA");
         Optional<Member> optionalMember = memberRepository.findOptionalByUsername("AAA");
+    }
+
+    @Test
+    public void paging(){
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member11", 10));
+        memberRepository.save(new Member("member12", 10));
+        memberRepository.save(new Member("member13", 10));
+        memberRepository.save(new Member("member14", 10));
+        memberRepository.save(new Member("member15", 10));
+        memberRepository.save(new Member("member16", 10));
+
+        PageRequest pageRequest = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "username"));
+
+        //when
+        Page<Member> page = memberRepository.findByAge(10, pageRequest);
+        Slice<Member> slicePage = memberRepository.findByAgeSlice(10, pageRequest);
+
+        page.map(p -> new MemberDto(p.getId(), p.getUsername(), p.getTeam().getName()));
+        //then
+        List<Member> content = page.getContent();
+
+        assertThat(content.size()).isEqualTo(5); //가져온 컨텐츠 갯수
+        assertThat(page.getTotalElements()).isEqualTo(7); //전체 컨텐츠 갯수
+        assertThat(page.getNumber()).isEqualTo(0); //현재 페이지 번호
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue();
+
+        assertThat(slicePage.getContent().size()).isEqualTo(6); //slice는 갯수를 +1 해서 가져온다
     }
 }
