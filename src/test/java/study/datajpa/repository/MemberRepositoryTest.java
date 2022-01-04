@@ -17,6 +17,7 @@ import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ class MemberRepositoryTest {
 
     @Autowired private MemberRepository memberRepository;
     @Autowired private TeamRepository teamRepository;
+    @PersistenceContext private EntityManager em;
 
     @Test
     public void test() throws Exception{
@@ -216,5 +218,55 @@ class MemberRepositoryTest {
 
         //then
         assertThat(resultCnt).isEqualTo(3);
+    }
+
+    @Test
+    public void findMemberLazy(){
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        Member member1 = new Member("member1");
+        member1.setTeam(teamA);
+        Member member2 = new Member("member2");
+        member2.setTeam(teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        for (Member member : memberRepository.findAll()) {
+            System.out.println("member = " + member);
+            System.out.println(member.getTeam());
+        }
+    }
+
+    @Test
+    public void queryHint() throws Exception{
+        //given
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //when
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+        em.flush();
+        em.clear();
+    }
+
+    @Test
+    public void lock() throws Exception{
+        //given
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //when
+        List<Member> result = memberRepository.findLockByUsername("member1");
+        //then
     }
 }
