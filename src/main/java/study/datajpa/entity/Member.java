@@ -1,6 +1,8 @@
 package study.datajpa.entity;
 
 import lombok.*;
+import study.datajpa.entity.base.BaseEntity;
+import study.datajpa.entity.base.JpaBaseEntity;
 
 import javax.persistence.*;
 
@@ -12,7 +14,7 @@ import javax.persistence.*;
         name = "Member.findByUsername",
         query = "select m from Member m where m.username = :username"
 )
-public class Member {
+public class Member extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "member_id")
