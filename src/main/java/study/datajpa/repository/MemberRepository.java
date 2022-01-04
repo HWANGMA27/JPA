@@ -13,7 +13,7 @@ import javax.persistence.QueryHint;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     //파라미터가 길어지면 메소드명도 길어지는 단점이 있다.
     List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
