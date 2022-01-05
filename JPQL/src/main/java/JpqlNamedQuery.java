@@ -41,8 +41,8 @@ public class JpqlNamedQuery {
                 System.out.println(temp.getUsername());
             }
 
-            em.createNamedQuery("Member.findByAge")
-                    .setParameter("age", member.getAge());
+//            em.createNamedQuery("Member.findByAge")
+//                    .setParameter("age", member.getAge());
             tx.commit();
         }catch (Exception e){
             tx.rollback();
