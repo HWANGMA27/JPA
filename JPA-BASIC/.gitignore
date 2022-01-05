@@ -1,7 +1,7 @@
 # Project exclude paths
 /.gradle/
 /build/
-/out/
+/target/
 /build/classes/java/main/
 /build/classes/java/test/
 *.iml
