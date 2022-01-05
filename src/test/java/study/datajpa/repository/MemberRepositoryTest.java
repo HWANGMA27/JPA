@@ -284,4 +284,29 @@ class MemberRepositoryTest {
         System.out.println(findMember.getCreatedBy());
         System.out.println(findMember.getLastModifiedBy());
     }
+
+    @Test
+    public void nativeQueryTest() throws Exception{
+        //given
+        Team team = new Team("teamA");
+        teamRepository.save(team);
+        Member member1 = new Member("mem1");
+        Member member2 = new Member("mem2");
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        em.flush();
+        em.clear();
+        //when
+        memberRepository.findByNativeQuery("mem1");
+        //native쿼리 dto형태로 반환받기
+        Page<MemberProjection> result = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+        List<MemberProjection> content = result.getContent();
+        for (MemberProjection memberProjection : content) {
+            System.out.println("memberProjection.getUsername() = " + memberProjection.getUsername());
+            System.out.println("memberProjection.getTeamName() = " + memberProjection.getTeamName());
+        }
+
+
+        //then
+    }
 }
